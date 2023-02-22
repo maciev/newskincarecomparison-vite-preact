@@ -6,14 +6,31 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
-    "preact": "^10.11.3"
+    "preact": "^10.11.3",
+    "preact-router": "^4.1.0",
+    "puppeteer": "^19.7.2"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "preact",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "ignorePatterns": [
+      "build/"
+    ]
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.5.0",
-    "typescript": "^4.9.3",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.34.0",
+    "eslint-config-preact": "^1.3.0",
+    "preact": "^10.11.3",
+    "typescript": "^4.9.5",
     "vite": "^4.1.0"
   }
 }

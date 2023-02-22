@@ -1,9 +1,11 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import './app.css'
+import { useState } from "preact/hooks";
+import preactLogo from "./assets/preact.svg";
+import "./app.css";
+import { Fragment, h } from "preact";
+import { Homescreen } from "../pages/Homescreen/Homescreen";
 
 export function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -27,6 +29,7 @@ export function App() {
       <p class="read-the-docs">
         Click on the Vite and Preact logos to learn more
       </p>
+      <Homescreen />
     </>
-  )
+  );
 }
