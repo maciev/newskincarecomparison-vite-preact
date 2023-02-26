@@ -10,6 +10,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.8.0",
+    "dotenv": "^16.0.3",
     "preact": "^10.11.3",
     "preact-router": "^4.1.0",
     "puppeteer": "^19.7.2",

@@ -1,20 +1,15 @@
 import "./app.css";
 import { Homescreen } from "../pages/Homescreen/Homescreen";
-import Router from "preact-router";
+import Router, { Route } from "preact-router";
 import { Productpage } from "../pages/Productpage/Productpage";
 
 export function App() {
   return (
     <>
-      <Router url="/">
-        <Homescreen />
+      <Router>
+        <Route path="/" component={Homescreen} />
+        <Route path="/product" component={Productpage} />
       </Router>
-      {/*<Router
-        url="/product
-      "
-      >
-        <Productpage />
-      </Router>*/}
     </>
   );
 }

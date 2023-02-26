@@ -1,7 +1,8 @@
-old scripts
+To-do
 
-"scripts": {
-"dev": "vite",
-"build": "tsc && vite build",
-"preview": "vite preview"
-},
+Set up database
+Install Styled Components - DONE
+Install DB with ENV - DOING
+Refactor all Tailwind to Styled Components
+Import Scraper and Middleware
+Implement Routes and Switches to pages

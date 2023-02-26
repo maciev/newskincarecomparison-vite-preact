@@ -26,7 +26,7 @@ export function Homescreen() {
       <div class="card">
         <button
           onClick={() => {
-            <Link path="/product" />;
+            <Link children="/product" />;
           }}
         >
           count is {count}
@@ -42,3 +42,6 @@ export function Homescreen() {
   );
 }
 render(<Homescreen />, document.getElementById("app")!);
+
+//get data
+//const {data, error} = await supabase.from("products").select()
