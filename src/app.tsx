@@ -1,15 +1,19 @@
 import "./app.css";
 import { Homescreen } from "../pages/Homescreen/Homescreen";
-import Router, { Route } from "preact-router";
+import { Route } from "wouter";
 import { Productpage } from "../pages/Productpage/Productpage";
+import { createContext } from "preact";
+import { createAppState } from "../middleware/jolsescrape";
 
 export function App() {
   return (
     <>
-      <Router>
-        <Route path="/" component={Homescreen} />
-        <Route path="/product" component={Productpage} />
-      </Router>
+      {/*<AppState.Provider value={createAppState().products.value.price}>*/}
+
+      <Route path="/product" component={Productpage} />
+      <Route path="/" component={Productpage} />
+
+      {/*</AppState.Provider>*/}
     </>
   );
 }

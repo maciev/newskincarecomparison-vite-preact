@@ -1,9 +1,25 @@
+const { signal } = require("@preact/signals");
+const { createContext } = require("preact");
+const { useContext } = require("preact/hooks");
 const puppet = require("puppeteer");
-const { default: supabase } = require("../server/db");
+//const { default: supabase } = require("../server/db");
 
 //to-do
 //modernize scrape
 //add supabase DB
+
+export function createAppState() {
+  const products = signal([{ price: 0 }]);
+
+  return { products };
+}
+
+//export const productsSignal = signal({
+//  name: "name1",
+//  link: "www.link.com",
+//  yesstyledate: dateformat,
+//  yesstyleprice: priceFinal,
+//});
 
 async function scrape(_url) {
   const browser = await puppet.launch();
@@ -34,33 +50,33 @@ async function scrape(_url) {
     second: "2-digit",
   }).format(date);
 
-  //view data
-const  isExisting = await supabase.from("skincare_products").select(yesstyleprice)
+  //view data, conditionally if price !0-- TODO ADD Matching ID
 
-isExisting()
+  //const queryIsExisting = await supabase
+  //  .from("skincare_products")
+  //  .select(yesstyleprice);
 
-//TODO -  build out function if price is already existing, UPDATE price, if not NEW insert below
+  //if (yesstyleprice === 0) {
+  //  queryIsExisting = query.eq("yesstylePrice", priceFinal);
+  //}
 
-//insert data
-  const {error} = await supabase.from('skincare_products').insert({
-    name: "name1",
-    link: "www.link.com",
-    yesstyledate: dateformat;
-    yesstyleprice: priceFinal;
+  //creating context that is readable in frontend?
 
-  })
+  //TODO -  build out function if price is already existing, UPDATE price, if not NEW insert below
 
-  
+  //insert data
+  //const insertData  = await supabase.from('skincare_products').insert({
+  //  name: "name1",
+  //  link: "www.link.com",
+  //  yesstyledate: dateformat,
+  //  yesstyleprice: priceFinal,
+  //})
 
-  //db.collection("products").doc("SayISgeHIc5fT17cRhNn").update({
-  //  jolseprice: priceFinal,
-  //  jolsedate: dateformat,
-  //});
+  //export default insertData
 
-
-  browser.close();
+  //browser.close();
 }
 
 scrape(
   "https://jolse.com/product/innisfree-daily-mild-sunscreen-spf50-pa-50ml/19461/"
-)
+);
