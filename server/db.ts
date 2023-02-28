@@ -10,8 +10,8 @@ export interface Products {
 }
 
 const supabase = createClient(
-  "import.meta.env.SUPABASE_HOST_URL",
-  "process.env.SUPABASE_API_KEY"
+  "import.meta.env.VITE_SUPABASE_HOST_URL",
+  "import.meta.env.VITE_SUPABASE_API_KEY"
 );
 
 export default supabase;

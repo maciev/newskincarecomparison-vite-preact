@@ -1,20 +1,21 @@
 import { render } from "preact";
 import styled from "styled-components";
-import { DivContainer } from "../../components/Header/Header";
+import { DivContainer } from "../../pages/Homescreen/Homescreen";
 
 const FooterContainer = styled(DivContainer)`
   background-color: blueviolet;
   bottom: 0px;
-  position: fixed;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: center;
   flex: 1;
   height: 2rem;
-  width: 100%;
   border-top-right-radius: 2.5px;
   border-top-left-radius: 2.5px;
-  padding: 0;
+
+  > * {
+    display: flex;
+  }
 `;
 
 export { FooterContainer };
@@ -22,7 +23,9 @@ export { FooterContainer };
 export function Footer() {
   return (
     <>
-      <FooterContainer>Footer Test</FooterContainer>
+      <FooterContainer>
+        Created by Andrew Chatelain - February 2023
+      </FooterContainer>
     </>
   );
 }

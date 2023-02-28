@@ -1,18 +1,17 @@
-const { signal } = require("@preact/signals");
-const { createContext } = require("preact");
-const { useContext } = require("preact/hooks");
-const puppet = require("puppeteer");
+//const { signal } = require("@preact/signals");
+//const { createContext } = require("preact");
+//const { useContext } = require("preact/hooks");
+
+import puppeteer, { Puppeteer } from "puppeteer";
+//const puppet = require("puppeteer");
+
 //const { default: supabase } = require("../server/db");
 
-//to-do
-//modernize scrape
-//add supabase DB
+//export function createAppState() {
+//  const products = signal([{ price: 0 }]);
 
-export function createAppState() {
-  const products = signal([{ price: 0 }]);
-
-  return { products };
-}
+//  return { products };
+//}
 
 //export const productsSignal = signal({
 //  name: "name1",
@@ -22,14 +21,16 @@ export function createAppState() {
 //});
 
 async function scrape(_url) {
-  const browser = await puppet.launch();
+  const scrapeLink =
+    "https://jolse.com/product/skin1004-madagascar-centella-hyalu-cica-water-fit-sun-serum-50ml-spf50/61929/category/1/display/22/";
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   await page.goto(_url);
 
   //get price
   const [price] = await page.$x(
-    "/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div/div/div[1]/div[1]/div[3]/table/tbody/tr[4]/td/span[1]/span/span"
+    "/html/body/div[4]/div[1]/div/div[2]/div[2]/div[1]/div[2]/div[6]/span/strong/em"
   );
   const priceText = await price.getProperty("textContent");
   const priceJson = await priceText.jsonValue();
@@ -50,33 +51,38 @@ async function scrape(_url) {
     second: "2-digit",
   }).format(date);
 
-  //view data, conditionally if price !0-- TODO ADD Matching ID
-
-  //const queryIsExisting = await supabase
-  //  .from("skincare_products")
-  //  .select(yesstyleprice);
-
-  //if (yesstyleprice === 0) {
-  //  queryIsExisting = query.eq("yesstylePrice", priceFinal);
-  //}
-
-  //creating context that is readable in frontend?
-
-  //TODO -  build out function if price is already existing, UPDATE price, if not NEW insert below
-
-  //insert data
-  //const insertData  = await supabase.from('skincare_products').insert({
-  //  name: "name1",
-  //  link: "www.link.com",
-  //  yesstyledate: dateformat,
-  //  yesstyleprice: priceFinal,
-  //})
-
-  //export default insertData
-
-  //browser.close();
+  scrape(scrapeLink);
+  console.log(scrape);
+  browser.close();
 }
+//view data, conditionally if price !0-- TODO ADD Matching ID
 
-scrape(
-  "https://jolse.com/product/innisfree-daily-mild-sunscreen-spf50-pa-50ml/19461/"
-);
+//const queryisExisting = async () => {
+//  const result = await supabase.from("skincare_products").select(yesstyleprice);
+//  return result;
+//};
+
+//async () => {
+//  const existingQuery = await queryIsExisting();
+//  console.log(existingQuery);
+//};
+
+//if (existingQuery === 0) {
+//  // Run the scraper and INSERT
+
+//  scrape(
+//    scrapeLink
+//  );
+
+//  const insertData = await supabase.from("skincare_products").insert({
+//    name: "name1",
+//    link: "www.link.com",
+//    yesstyledate: dateformat,
+//    yesstyleprice: existingQuery,
+//  });
+//  insertData();
+//} else {
+//  //ELSE - UPDATE the data
+//}
+
+//creating context that is readable in frontend?

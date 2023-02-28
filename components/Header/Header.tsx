@@ -1,20 +1,17 @@
 import { render } from "preact";
 import styled from "styled-components";
 import { Link } from "wouter";
+import { DivContainer } from "../../pages/Homescreen/Homescreen";
 
-const DivContainer = styled.div`
+const HeaderContainer = styled(DivContainer)`
   top: 0px;
-  position: fixed;
-  display: flex;
   flex-direction: row;
   align-items: center;
   flex: 1;
   background-color: #afbbc9;
-  height: 2rem;
-  width: 100%;
+  height: 4rem;
   border-bottom-right-radius: 2.5px;
   border-bottom-left-radius: 2.5px;
-  padding: 0;
 
   > * {
     display: flex;
@@ -38,19 +35,17 @@ const HeaderRight = styled.div`
   justify-content: right;
 `;
 
-export { DivContainer };
-
 export default function Header() {
   return (
     <>
-      <DivContainer>
+      <HeaderContainer>
         <HeaderLeft>
           <a>
             <Link to="/">Home</Link>
           </a>
         </HeaderLeft>
         <HeaderRight>Right</HeaderRight>
-      </DivContainer>
+      </HeaderContainer>
     </>
   );
 }

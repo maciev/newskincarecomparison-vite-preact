@@ -4,6 +4,18 @@ import { useState } from "preact/hooks";
 import preactLogo from "../../src/assets/preact.svg";
 import styled from "styled-components";
 
+const DivContainer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  background-color: #afbbc9;
+  width: 100%;
+  padding: 0;
+`;
+
+export { DivContainer };
 export function Homescreen() {
   const [count, setCount] = useState(0);
 
