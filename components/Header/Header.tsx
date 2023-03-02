@@ -1,10 +1,11 @@
 import { render } from "preact";
 import styled from "styled-components";
 import { Link } from "wouter";
-import { DivContainer } from "../../pages/Homescreen/Homescreen";
+import SectionContainer from "../Section/Section";
 
-const HeaderContainer = styled(DivContainer)`
+const HeaderContainer = styled(SectionContainer)`
   top: 0px;
+  position: absolute;
   flex-direction: row;
   align-items: center;
   flex: 1;
@@ -14,6 +15,7 @@ const HeaderContainer = styled(DivContainer)`
   border-bottom-left-radius: 2.5px;
 
   > * {
+    position: relative;
     display: flex;
   }
 `;

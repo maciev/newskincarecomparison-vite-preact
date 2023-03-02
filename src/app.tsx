@@ -3,7 +3,6 @@ import { Homescreen } from "../pages/Homescreen/Homescreen";
 import { Route } from "wouter";
 import { Productpage } from "../pages/Productpage/Productpage";
 import { createContext } from "preact";
-import { createAppState } from "../middleware/jolsescrape";
 
 export function App() {
   return (

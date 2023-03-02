@@ -1,11 +1,8 @@
 //const { signal } = require("@preact/signals");
 //const { createContext } = require("preact");
 //const { useContext } = require("preact/hooks");
-
-import puppeteer, { Puppeteer } from "puppeteer";
-//const puppet = require("puppeteer");
-
-//const { default: supabase } = require("../server/db");
+import puppeteer from "puppeteer";
+import supabase from "../server/db.js";
 
 //export function createAppState() {
 //  const products = signal([{ price: 0 }]);
@@ -21,16 +18,13 @@ import puppeteer, { Puppeteer } from "puppeteer";
 //});
 
 async function scrape(_url) {
-  const scrapeLink =
-    "https://jolse.com/product/skin1004-madagascar-centella-hyalu-cica-water-fit-sun-serum-50ml-spf50/61929/category/1/display/22/";
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   await page.goto(_url);
 
-  //get price
   const [price] = await page.$x(
-    "/html/body/div[4]/div[1]/div/div[2]/div[2]/div[1]/div[2]/div[6]/span/strong/em"
+    "/html/body/div[3]/main/div[2]/div[2]/div[3]/span"
   );
   const priceText = await price.getProperty("textContent");
   const priceJson = await priceText.jsonValue();
@@ -38,7 +32,6 @@ async function scrape(_url) {
 
   console.log({ priceFinal, _url });
 
-  //let fs = require("fs"),
   //  data = JSON.stringify({ priceFinal });
 
   const date = Date.now();
@@ -51,10 +44,21 @@ async function scrape(_url) {
     second: "2-digit",
   }).format(date);
 
-  scrape(scrapeLink);
-  console.log(scrape);
+  const { data, error } = await supabase
+    .from("skincare_pricing")
+    .select("id")
+    .match({ id: 1 });
+  //.update({ YesStyleprice: priceFinal });
+
+  console.log(data);
+
   browser.close();
 }
+
+const scrapeLink =
+  "https://www.yesstyle.com/en/cosrx-aloe-soothing-sun-cream-50ml/info.html/pid.1052684630";
+
+scrape(scrapeLink);
 //view data, conditionally if price !0-- TODO ADD Matching ID
 
 //const queryisExisting = async () => {
@@ -74,13 +78,6 @@ async function scrape(_url) {
 //    scrapeLink
 //  );
 
-//  const insertData = await supabase.from("skincare_products").insert({
-//    name: "name1",
-//    link: "www.link.com",
-//    yesstyledate: dateformat,
-//    yesstyleprice: existingQuery,
-//  });
-//  insertData();
 //} else {
 //  //ELSE - UPDATE the data
 //}

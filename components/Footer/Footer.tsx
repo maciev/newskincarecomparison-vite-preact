@@ -1,11 +1,13 @@
 import { render } from "preact";
 import styled from "styled-components";
-import { DivContainer } from "../../pages/Homescreen/Homescreen";
+import SectionContainer from "../Section/Section";
 
-const FooterContainer = styled(DivContainer)`
-  background-color: blueviolet;
+const FooterContainer = styled(SectionContainer)`
+  background-color: #bfa3d9;
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
   bottom: 0px;
-  display: flex;
   flex-direction: row;
   justify-content: center;
   flex: 1;
