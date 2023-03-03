@@ -2,6 +2,7 @@
 //const { createContext } = require("preact");
 //const { useContext } = require("preact/hooks");
 import puppeteer from "puppeteer";
+import dayjs from "dayjs";
 import supabase from "../server/db.js";
 
 //export function createAppState() {
@@ -28,29 +29,33 @@ async function scrape(_url) {
   );
   const priceText = await price.getProperty("textContent");
   const priceJson = await priceText.jsonValue();
-  const priceFinal = priceJson.replace("\\n", "").trim();
+  const priceFinal = priceJson.replace(/[^0-9.]/g, "").trim();
 
   console.log({ priceFinal, _url });
 
   //  data = JSON.stringify({ priceFinal });
 
-  const date = Date.now();
-  const dateformat = new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).format(date);
+  //const date = Date.now();
+  //const dateformat = new Intl.DateTimeFormat("en-US", {
+  //  year: "numeric",
+  //  month: "2-digit",
+  //  day: "2-digit",
+  //  hour: "2-digit",
+  //  minute: "2-digit",
+  //  second: "2-digit",
+  //}).format(date);
 
-  const { data, error } = await supabase
+  const date = dayjs().format;
+
+  const { error } = await supabase(
+    process.env.VITE_SUPABASE_HOST_URL,
+    process.env.VITE_SUPABASE_API_KEY
+  )
     .from("skincare_pricing")
-    .select("id")
-    .match({ id: 1 });
-  //.update({ YesStyleprice: priceFinal });
+    .update({ YesStyleprice: priceFinal, YesStyleupdated_at: date })
+    .eq("id", 1);
 
-  console.log(data);
+  console.log(error);
 
   browser.close();
 }
