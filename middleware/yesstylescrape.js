@@ -48,56 +48,37 @@ async function scrape(_url) {
 
   const date = dayjs().format;
 
-  const supabase = await createClient();
-  //add ENV keys after github pull
-
-  async function viewData() {
-    const response = await supabase
-      .from("skincare_pricing")
-      .select("YesStyleupdated_at")
-      .eq("id", 1);
-    return response.data[0].YesStyleupdated_at;
-  }
-  viewData();
-
-  if (viewData() != 0) {
-    console.log("this is correct");
-  }
-
-  //const { data, error } = await supabase
-  //  .from("skincare_pricing")
-  //  .update({ YesStyleprice: priceFinal, YesStyleupdated_at: date })
-  //  .eq("id", 1);
+  const { data, error } = await supabase
+    .from("skincare_pricing")
+    .update({ YesStyleprice: priceFinal, YesStyleupdated_at: date })
+    .eq("id", 1);
 
   browser.close();
 }
 
+//SAME DAY LOGIC BELOW - ADD SUPABASE DETAILS
+const supabase = await createClient();
+
+async function viewData() {
+  const response = await supabase
+    .from("skincare_pricing")
+    .select("YesStyleupdated_at")
+    .eq("id", 1);
+  return response.data[0].YesStyleupdated_at;
+}
+
+viewData().then((result) => {
+  console.log(result[8], result[9]);
+  if (result[9] === "1") {
+    console.log("true");
+  } else {
+    scrape(scrapeLink);
+  }
+});
+
 const scrapeLink =
   "https://www.yesstyle.com/en/cosrx-aloe-soothing-sun-cream-50ml/info.html/pid.1052684630";
 
-scrape(scrapeLink);
-
-//view data, conditionally if price !0-- TODO ADD Matching ID
-
-//const queryisExisting = async () => {
-//  const result = await supabase.from("skincare_products").select(yesstyleprice);
-//  return result;
-//};
-
-//async () => {
-//  const existingQuery = await queryIsExisting();
-//  console.log(existingQuery);
-//};
-
-//if (existingQuery === 0) {
-//  // Run the scraper and INSERT
-
-//  scrape(
-//    scrapeLink
-//  );
-
-//} else {
-//  //ELSE - UPDATE the data
-//}
+//scrape(scrapeLink);
 
 //creating context that is readable in frontend?
