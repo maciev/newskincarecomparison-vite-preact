@@ -3,7 +3,8 @@
 //const { useContext } = require("preact/hooks");
 import puppeteer from "puppeteer";
 import dayjs from "dayjs";
-import supabase from "../server/db.js";
+import { createClient } from "@supabase/supabase-js";
+//import supabase from "../server/db.js";
 
 //export function createAppState() {
 //  const products = signal([{ price: 0 }]);
@@ -47,15 +48,26 @@ async function scrape(_url) {
 
   const date = dayjs().format;
 
-  const { error } = await supabase(
-    process.env.VITE_SUPABASE_HOST_URL,
-    process.env.VITE_SUPABASE_API_KEY
-  )
-    .from("skincare_pricing")
-    .update({ YesStyleprice: priceFinal, YesStyleupdated_at: date })
-    .eq("id", 1);
+  const supabase = await createClient();
+  //add ENV keys after github pull
 
-  console.log(error);
+  async function viewData() {
+    const response = await supabase
+      .from("skincare_pricing")
+      .select("YesStyleupdated_at")
+      .eq("id", 1);
+    return response.data[0].YesStyleupdated_at;
+  }
+  viewData();
+
+  if (viewData() != 0) {
+    console.log("this is correct");
+  }
+
+  //const { data, error } = await supabase
+  //  .from("skincare_pricing")
+  //  .update({ YesStyleprice: priceFinal, YesStyleupdated_at: date })
+  //  .eq("id", 1);
 
   browser.close();
 }
@@ -64,6 +76,7 @@ const scrapeLink =
   "https://www.yesstyle.com/en/cosrx-aloe-soothing-sun-cream-50ml/info.html/pid.1052684630";
 
 scrape(scrapeLink);
+
 //view data, conditionally if price !0-- TODO ADD Matching ID
 
 //const queryisExisting = async () => {
