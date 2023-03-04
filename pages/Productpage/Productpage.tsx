@@ -6,7 +6,7 @@ import { Footer } from "../../components/Footer/Footer";
 import { Section } from "../../components/Section/Section";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Link } from "wouter";
-import { Mouse } from "puppeteer";
+import { createClient } from "@supabase/supabase-js";
 
 export function Productpage() {
   const PageWrapper = styled.div`
@@ -30,6 +30,7 @@ export function Productpage() {
 
     & input {
       margin-top: 1rem;
+      margin-bottom: 1rem;
       background-color: white;
       outline-width: 0.1rem;
       outline-style: solid;
@@ -45,28 +46,39 @@ export function Productpage() {
     }
   `;
 
-  interface Products {
+  const OptionDiv = styled.div`
+    background-color: lightgreen;
+  `;
+
+  interface StateProperties {
     product_name: string;
-    image: string;
-    Wishtrendlink: string;
-    Stylevanalink: string;
-    RoseRoselink: string;
-    YesStylelink: string;
-    BeautynetKorealink: string;
+    //image: string;
+    //Wishtrendlink: string;
+    //Stylevanalink: string;
+    //RoseRoselink: string;
+    //YesStylelink: string;
+    //BeautynetKorealink: string;
   }
 
   const [display, setDisplay] = useState(false);
   const [search, setSearch] = useState("");
   const wrapperRef = useRef<HTMLElement>(null);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<any>();
+  //const [products, setProducts] = useState<StateProperties[]>([]);
 
-  //useEffect(() => {
-  //  database
-  //    .collection("products")
-  //    .onSnapshot((snapshot) =>
-  //      setProducts(snapshot.docs.map((doc) => doc.data()))
-  //    );
-  //}, []);
+  const supabase = createClient();
+
+  //LATER - FIX TS Types
+  useEffect(() => {
+    const fetchDatabase = async () => {
+      const { data, error } = await supabase
+        .from("skincare_products")
+        .select("product_name");
+      console.log({ data, error });
+      setProducts(data);
+    };
+    fetchDatabase();
+  }, []);
 
   const setProductDex = (product: any) => {
     setSearch(product);
@@ -80,15 +92,13 @@ export function Productpage() {
     };
   });
 
-  const handleClickOutside = (event: MouseEvent) => {
-    //deleted current:
+  //fix TS Type
+  const handleClickOutside = (event: any) => {
     const { current: wrap } = wrapperRef;
     if (wrap && !wrap.contains(event.target)) {
       setDisplay(false);
     }
   };
-
-  const productCardLoop = [0, 1, 2, 3];
 
   return (
     <>
@@ -110,11 +120,11 @@ export function Productpage() {
             <div>
               {products
                 .filter(
-                  ({ product_name }: Products) =>
+                  ({ product_name }) =>
                     product_name.indexOf(search.toLowerCase()) > -1
                 )
                 .slice(0, 5)
-                .map((products: Products, index) => {
+                .map((products, index) => {
                   return (
                     <Link
                       href="/product/${products.product_name}"
@@ -129,35 +139,23 @@ export function Productpage() {
                       //  BeautynetKorealink: products.BeautynetKorealink,
                       //},
                     >
-                      <div
+                      <OptionDiv
                         onClick={() => setProductDex(products.product_name)}
-                        className="option"
                         key={products.product_name}
                         //tabIndex="0"
                       >
                         <span>{products.product_name}</span>
                         <img src={products.image} alt="product" />
-                      </div>
+                      </OptionDiv>
                     </Link>
                   );
                 })}
             </div>
-
-            //   <div className="productcardbox">
-            //   {products.slice(0, 4).map((products, index) => {
-            //     return <ProductCard image={products.image} title={products.title} />;
-            //   })}
-            // </div>
           )}
-          {/*LOOP PRODUCTCARD ON HOMEPAGE*/}
-          {/*{productCardLoop.map((i) => (
-            <ProductCard />
-          ))}*/}
         </SearchSection>
         <Footer></Footer>
       </PageWrapper>
     </>
   );
 }
-
 render(<Productpage />, document.getElementById("app")!);

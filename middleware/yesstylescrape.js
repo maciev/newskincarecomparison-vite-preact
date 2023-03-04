@@ -19,9 +19,19 @@ import { createClient } from "@supabase/supabase-js";
 //  yesstyleprice: priceFinal,
 //});
 
-async function scrape(_url) {
+async function scrape() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+
+  const supabase = await createClient();
+
+  async function dynamicScrapeLink() {
+    const response = await supabase
+      .from("skincare_products")
+      .select("YesStylelink")
+      .eq("id", 1);
+    return response;
+  }
 
   await page.goto(_url);
 
@@ -56,7 +66,10 @@ async function scrape(_url) {
 }
 
 //SAME DAY LOGIC BELOW - ADD SUPABASE DETAILS
-const supabase = await createClient();
+const supabase = await createClient(
+  "https://gcnaauaanlhzhsajnhwp.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbmFhdWFhbmxoemhzYWpuaHdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzczNTg5NDIsImV4cCI6MTk5MjkzNDk0Mn0.439_zL7X8X_ixEMmPYiKVNkPILcYupIuKVjmcX5kxwA"
+);
 
 //logic -- if less than 7 days, dont scrape
 async function viewData() {
@@ -70,19 +83,10 @@ async function viewData() {
 
 //viewData().then();
 
-async function dynamicScrapeLink() {
-  const response = await supabase
-    .from("skincare_products")
-    .select("YesStylelink")
-    .eq("id", 1);
-  return response;
-}
-const scrapeLink = await dynamicScrapeLink().then(scrape);
-
 viewData().then(async (result) => {
-  if (result < "1") {
+  if (result < "240140300") {
     console.log("don't scrape less than 7 days");
   } else {
-    scrapeLink;
+    scrape();
   }
 });
