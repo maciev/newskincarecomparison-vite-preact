@@ -32,7 +32,8 @@ async function scrape(_url) {
   const priceJson = await priceText.jsonValue();
   const priceFinal = priceJson.replace(/[^0-9.]/g, "").trim();
 
-  console.log({ priceFinal, _url });
+  const date = dayjs().format;
+  console.log({ priceFinal, _url, date });
 
   //  data = JSON.stringify({ priceFinal });
 
@@ -46,8 +47,6 @@ async function scrape(_url) {
   //  second: "2-digit",
   //}).format(date);
 
-  const date = dayjs().format;
-
   const { data, error } = await supabase
     .from("skincare_pricing")
     .update({ YesStyleprice: priceFinal, YesStyleupdated_at: date })
@@ -59,26 +58,31 @@ async function scrape(_url) {
 //SAME DAY LOGIC BELOW - ADD SUPABASE DETAILS
 const supabase = await createClient();
 
+//logic -- if less than 7 days, dont scrape
 async function viewData() {
   const response = await supabase
     .from("skincare_pricing")
     .select("YesStyleupdated_at")
     .eq("id", 1);
-  return response.data[0].YesStyleupdated_at;
+  console.log(Date.now() - Date.parse(response.data[0].YesStyleupdated_at));
+  return Date.now() - Date.parse(response.data[0].YesStyleupdated_at);
 }
 
-viewData().then((result) => {
-  console.log(result[8], result[9]);
-  if (result[9] === "1") {
-    console.log("true");
+//viewData().then();
+
+async function dynamicScrapeLink() {
+  const response = await supabase
+    .from("skincare_products")
+    .select("YesStylelink")
+    .eq("id", 1);
+  return response;
+}
+const scrapeLink = await dynamicScrapeLink().then(scrape);
+
+viewData().then(async (result) => {
+  if (result < "1") {
+    console.log("don't scrape less than 7 days");
   } else {
-    scrape(scrapeLink);
+    scrapeLink;
   }
 });
-
-const scrapeLink =
-  "https://www.yesstyle.com/en/cosrx-aloe-soothing-sun-cream-50ml/info.html/pid.1052684630";
-
-//scrape(scrapeLink);
-
-//creating context that is readable in frontend?

@@ -1,10 +1,12 @@
 import { render } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
 import { Section } from "../../components/Section/Section";
+import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Link } from "wouter";
+import { Mouse } from "puppeteer";
 
 export function Productpage() {
   const PageWrapper = styled.div`
@@ -24,6 +26,7 @@ export function Productpage() {
     height: 100%;
     align-items: center;
     justify-content: center;
+    font-weight: normal;
 
     & input {
       margin-top: 1rem;
@@ -54,7 +57,7 @@ export function Productpage() {
 
   const [display, setDisplay] = useState(false);
   const [search, setSearch] = useState("");
-  const wrapperRef = useRef(null);
+  const wrapperRef = useRef<HTMLElement>(null);
   const [products, setProducts] = useState([]);
 
   //useEffect(() => {
@@ -77,12 +80,15 @@ export function Productpage() {
     };
   });
 
-  const handleClickOutside = (event: Event) => {
+  const handleClickOutside = (event: MouseEvent) => {
+    //deleted current:
     const { current: wrap } = wrapperRef;
     if (wrap && !wrap.contains(event.target)) {
       setDisplay(false);
     }
   };
+
+  const productCardLoop = [0, 1, 2, 3];
 
   return (
     <>
@@ -111,18 +117,17 @@ export function Productpage() {
                 .map((products: Products, index) => {
                   return (
                     <Link
-                      to={{
-                        pathname: `/product/${products.product_name}`,
-                        state: {
-                          product_name: products.product_name,
-                          image: products.image,
-                          Wishtrendlink: products.Wishtrendlink,
-                          Stylevanalink: products.Stylevanalink,
-                          RoseRoselink: products.RoseRoselink,
-                          YesStylelink: products.YesStylelink,
-                          BeautynetKorealink: products.BeautynetKorealink,
-                        },
-                      }}
+                      href="/product/${products.product_name}"
+                      //pathname: `/product/${products.product_name}`,
+                      //state: {
+                      //  product_name: products.product_name,
+                      //  image: products.image,
+                      //  Wishtrendlink: products.Wishtrendlink,
+                      //  Stylevanalink: products.Stylevanalink,
+                      //  RoseRoselink: products.RoseRoselink,
+                      //  YesStylelink: products.YesStylelink,
+                      //  BeautynetKorealink: products.BeautynetKorealink,
+                      //},
                     >
                       <div
                         onClick={() => setProductDex(products.product_name)}
@@ -137,12 +142,17 @@ export function Productpage() {
                   );
                 })}
             </div>
+
             //   <div className="productcardbox">
             //   {products.slice(0, 4).map((products, index) => {
             //     return <ProductCard image={products.image} title={products.title} />;
             //   })}
             // </div>
           )}
+          {/*LOOP PRODUCTCARD ON HOMEPAGE*/}
+          {/*{productCardLoop.map((i) => (
+            <ProductCard />
+          ))}*/}
         </SearchSection>
         <Footer></Footer>
       </PageWrapper>

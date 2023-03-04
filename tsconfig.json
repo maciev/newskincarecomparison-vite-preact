@@ -22,8 +22,9 @@
     "jsxFactory": "h",
     "jsxImportSource": "preact",
     "jsxFragmentFactory": "Fragment",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": ["vite/client"]
   },
-  "include": ["src", "pages", "components"],
+  "include": ["src", "pages", "components", "server"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

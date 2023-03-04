@@ -5,7 +5,7 @@ import SectionContainer from "../Section/Section";
 
 const HeaderContainer = styled(SectionContainer)`
   top: 0px;
-  position: absolute;
+  position: fixed;
   flex-direction: row;
   align-items: center;
   flex: 1;

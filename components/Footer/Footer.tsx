@@ -4,10 +4,11 @@ import SectionContainer from "../Section/Section";
 
 const FooterContainer = styled(SectionContainer)`
   background-color: #bfa3d9;
-  position: absolute;
+  position: fixed;
   z-index: 2;
   display: inline-flex;
   bottom: 0px;
+  left: 0px;
   flex-direction: row;
   justify-content: center;
   flex: 1;

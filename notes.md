@@ -1,8 +1,11 @@
 To-do
 
-Set up database
+Set up database - DONE
 Install Styled Components - DONE
-Install DB with ENV - DOING
+Import Scraper and Middleware - DONE
+Install DB with ENV - NEED ENV HELP
+INSERT AND CONDITIONAL LOGIC DATABASE AND SCRAPER - DONE
+
 Refactor all Tailwind to Styled Components
-Import Scraper and Middleware
+
 Implement Routes and Switches to pages
