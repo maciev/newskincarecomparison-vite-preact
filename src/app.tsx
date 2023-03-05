@@ -10,7 +10,7 @@ export function App() {
       {/*<AppState.Provider value={createAppState().products.value.price}>*/}
 
       <Route path="/product" component={Productpage} />
-      <Route path="/" component={Productpage} />
+      <Route path="/" component={Homescreen} />
 
       {/*</AppState.Provider>*/}
     </>

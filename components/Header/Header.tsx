@@ -7,14 +7,16 @@ const HeaderContainer = styled(SectionContainer)`
   top: 0px;
   position: fixed;
   flex-direction: row;
+  z-index: 2;
   align-items: center;
   flex: 1;
-  background-color: #afbbc9;
+  background-color: #c5d8e9ea;
   height: 4rem;
   border-bottom-right-radius: 2.5px;
   border-bottom-left-radius: 2.5px;
 
   > * {
+    color: white;
     position: relative;
     display: flex;
   }
