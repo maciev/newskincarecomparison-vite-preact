@@ -6,6 +6,7 @@ import SectionContainer from "../Section/Section";
 const HeaderContainer = styled(SectionContainer)`
   top: 0px;
   position: fixed;
+  flex-direction: row;
   z-index: 2;
   align-items: center;
   flex: 1;
@@ -22,9 +23,9 @@ const HeaderContainer = styled(SectionContainer)`
 `;
 
 const HeaderLeft = styled.div`
-  padding-left: 8rem;
   flex-grow: 1;
   justify-content: left;
+  padding-left: 1rem;
 
   a {
     color: white;
@@ -36,7 +37,6 @@ const HeaderRight = styled.div`
   padding-right: 1rem;
   flex-grow: 1;
   justify-content: right;
-  padding-right: 8rem;
 `;
 
 export default function Header() {
@@ -48,9 +48,7 @@ export default function Header() {
             <Link to="/">Home</Link>
           </a>
         </HeaderLeft>
-        <HeaderRight>
-          <a>Cart</a>
-        </HeaderRight>
+        <HeaderRight>Right</HeaderRight>
       </HeaderContainer>
     </>
   );

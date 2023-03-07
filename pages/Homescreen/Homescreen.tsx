@@ -129,10 +129,7 @@ export function Homescreen() {
   }, []);
 
   console.log(products);
-  const supabase = createClient(
-    "https://gcnaauaanlhzhsajnhwp.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbmFhdWFhbmxoemhzYWpuaHdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzczNTg5NDIsImV4cCI6MTk5MjkzNDk0Mn0.439_zL7X8X_ixEMmPYiKVNkPILcYupIuKVjmcX5kxwA"
-  );
+  const supabase = createClient();
 
   //LATER - FIX TS Types
   //useEffect(() => {
