@@ -23,7 +23,10 @@ async function scrape() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  const supabase = await createClient();
+  const supabase = await createClient(
+    "https://gcnaauaanlhzhsajnhwp.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbmFhdWFhbmxoemhzYWpuaHdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzczNTg5NDIsImV4cCI6MTk5MjkzNDk0Mn0.439_zL7X8X_ixEMmPYiKVNkPILcYupIuKVjmcX5kxwA"
+  );
 
   async function dynamicScrapeLink() {
     const response = await supabase
@@ -66,10 +69,7 @@ async function scrape() {
 }
 
 //SAME DAY LOGIC BELOW - ADD SUPABASE DETAILS
-const supabase = await createClient(
-  "https://gcnaauaanlhzhsajnhwp.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbmFhdWFhbmxoemhzYWpuaHdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzczNTg5NDIsImV4cCI6MTk5MjkzNDk0Mn0.439_zL7X8X_ixEMmPYiKVNkPILcYupIuKVjmcX5kxwA"
-);
+const supabase = await createClient();
 
 //logic -- if less than 7 days, dont scrape
 async function viewData() {

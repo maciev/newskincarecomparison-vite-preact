@@ -43,36 +43,57 @@ export function Productpage() {
     max-height: 23rem;
   `;
 
-  const PriceBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    background-color: lightpink;
+  const PriceBox = styled.table`
+    display: grid;
+    overflow: auto;
+    background-color: #e1ecf5;
     min-height: 10rem;
     width: 20rem;
     border-style: solid;
     border: 3px;
     border-color: grey;
-    overflow: auto;
     margin-top: 6rem;
+    border-radius: 5px;
   `;
 
-  const Price = styled.span`
-    justify-items: center;
-    align-items: center;
+  //const PriceBox = styled.div`
+  //  display: grid;
+  //  overflow: auto;
+  //  background-color: lightpink;
+  //  min-height: 10rem;
+  //  width: 20rem;
+  //  border-style: solid;
+  //  border: 3px;
+  //  border-color: grey;
+  //  margin-top: 6rem;
+  //`;
+
+  const Price = styled.tr`
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin: auto;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-evenly;
+    overflow: visible;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 0.25rem;
     background-color: lightblue;
     height: 3rem;
-    width: 17rem;
+    min-width: 13rem;
 
     * {
-      padding-left: 1rem;
+      padding-left: 0.5rem;
       padding-right: 1rem;
     }
 
+    img {
+      max-width: 64px;
+    }
     span:nth-child(3) {
+      margin-left: auto;
+      margin-right: 1rem;
       padding: 2px;
       border: solid;
       border-radius: 5px;
@@ -80,6 +101,39 @@ export function Productpage() {
       color: red;
     }
   `;
+  //const Price = styled.span`
+  //  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  //  display: flex;
+  //  flex-direction: row;
+  //  justify-items: center;
+  //  align-items: center;
+  //  justify-content: space-evenly;
+  //  overflow: visible;
+  //  margin-left: 1rem;
+  //  margin-right: 1rem;
+  //  margin-top: 0.25rem;
+  //  background-color: lightblue;
+  //  height: 3rem;
+  //  min-width: 13rem;
+
+  //  * {
+  //    padding-left: 0.5rem;
+  //    padding-right: 1rem;
+  //  }
+
+  //  img {
+  //    max-width: 64px;
+  //  }
+  //  span:nth-child(3) {
+  //    margin-left: auto;
+  //    margin-right: 1rem;
+  //    padding: 2px;
+  //    border: solid;
+  //    border-radius: 5px;
+  //    border-color: lightslategrey;
+  //    color: red;
+  //  }
+  //`;
 
   const data = [
     {
@@ -102,18 +156,19 @@ export function Productpage() {
         </ProductArea>
         <PriceBox>
           <Price>
-            <span>this is an image</span>
+            <img src="https://www.yesstyle.com/_next_img/yesstyle_logo.svg">
+              this is an image
+            </img>
             <span>YesStyle</span>
             <span>$8.59</span>
           </Price>
           <Price>
-            {" "}
-            <span>this is an image</span>
+            <img src="https://cdn.stylevana.com/skin/frontend/codazon_fastest/default/images/SV-logo-664x130.png"></img>
             <span>Stylevana</span>
             <span>$8.59</span>
           </Price>
           <Price>
-            <span>this is an image</span>
+            <img src="https://beautynetkorea.com/main/logo.png"></img>
             <span>BeautyNetKorea</span>
             <span>$8.59</span>
           </Price>
