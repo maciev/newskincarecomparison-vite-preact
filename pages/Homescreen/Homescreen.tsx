@@ -5,96 +5,86 @@ import Header from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
 import { Section } from "../../components/Section/Section";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
-import { Link } from "wouter";
+import { Link, Route } from "wouter";
 import { createClient } from "@supabase/supabase-js";
+import { signal, computed, effect } from "@preact/signals";
+import useDebounce from "../../middleware/useDebounce";
 
-export function Homescreen() {
-  const PageWrapper = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  `;
+const PageWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
 
-  const SearchSection = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 4rem;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    font-weight: normal;
+const SearchSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 4rem;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
 
-    & input {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      background-color: white;
-      outline-width: 0.1rem;
-      outline-style: solid;
-      outline-color: #ebebeb;
-      border-radius: 2.5px;
-      height: 2rem;
-      width: 16rem;
-
-      //need to style inside of input
-      & .inputfield {
-        color: red;
-      }
-    }
-  `;
-
-  const OptionDiv = styled.div`
-    display: flex;
-    margin-bottom: 0.5rem;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: #b9edb9;
+  & input {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    outline-width: 0.1rem;
+    outline-style: solid;
+    outline-color: #ebebeb;
+    border-radius: 2.5px;
+    height: 2rem;
     width: 16rem;
-    height: 4rem;
 
-    &:hover {
-      transition-delay: 0.2s;
-      background-color: #daf3da;
+    //need to style inside of input
+    & .inputfield {
+      color: red;
     }
+  }
+`;
 
-    & div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+const OptionDiv = styled.div`
+  display: flex;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #b9edb9;
+  width: 16rem;
+  height: 4rem;
 
-      & img {
-        padding: 1rem;
-        max-height: 4rem;
-      }
-    }
-
-    & span {
-      display: flex;
-      justify-items: end;
-      align-items: end;
-    }
-  `;
-
-  interface StateProperties {
-    product_name: string;
-    //image: string;
-    //Wishtrendlink: string;
-    //Stylevanalink: string;
-    //RoseRoselink: string;
-    //YesStylelink: string;
-    //BeautynetKorealink: string;
+  &:hover {
+    transition-delay: 0.2s;
+    background-color: #daf3da;
   }
 
-  const [display, setDisplay] = useState(false);
-  const [search, setSearch] = useState("");
-  const wrapperRef = useRef<HTMLElement>(null);
-  const [products, setProducts] = useState<any>();
-  //const [products, setProducts] = useState<StateProperties[]>([]);
+  & div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  console.log(products);
+    & img {
+      padding: 1rem;
+      max-height: 4rem;
+    }
+  }
+
+  & span {
+    display: flex;
+    justify-items: end;
+    align-items: end;
+  }
+`;
+
+export function Homescreen() {
+  const [display, setDisplay] = useState(true);
+  const [search, setSearch] = useState<any>("");
+  const wrapperRef = useRef<HTMLElement>(null);
+  const [products, setProducts] = useState<any>(null);
+
   useEffect(() => {
     setProducts([
       {
@@ -103,7 +93,7 @@ export function Homescreen() {
         image:
           "https://d1flfk77wl2xk4.cloudfront.net/Assets/27/811/XL_p0056481127.png",
       },
-      ,
+
       {
         product_name: "Isntree Mugwort Calming Clay Mask",
 
@@ -117,19 +107,25 @@ export function Homescreen() {
         image:
           "https://d1flfk77wl2xk4.cloudfront.net/Assets/06/271/XL_p0091927106.jpg",
       },
-      ,
+
       {
         product_name: "COSRX Advanced Snail 92 All-in-one Cream",
 
         image:
           "https://cdn.shopify.com/s/files/1/0513/3775/6828/products/5_900x.png?v=1663711555",
       },
-      ,
     ]);
   }, []);
 
-  console.log(products);
-  const supabase = createClient();
+  //if (!products) {
+  //  console.log("products lasdfasfd");
+  //} else {
+  //  setTimeout(() => {
+  //    console.log(products[0].product_name);
+  //  }, 100);
+  //}
+
+  //const supabase = createClient();
 
   //LATER - FIX TS Types
   //useEffect(() => {
@@ -143,25 +139,49 @@ export function Homescreen() {
   //  fetchDatabase();
   //}, []);
 
-  const setProductDex = (product: any) => {
-    setSearch(product);
-    setDisplay(false);
-  };
+  //const setProductDex = (product: any) => {
+  //  search.value(product);
+  //  setDisplay(false);
+  //};
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
     };
-  });
+  }, []);
 
-  //fix TS Type
   const handleClickOutside = (event: any) => {
     const { current: wrap } = wrapperRef;
     if (wrap && !wrap.contains(event.target)) {
       setDisplay(false);
     }
   };
+
+  const setProductDex = (product) => {
+    setSearch(product);
+    setDisplay(false);
+  };
+
+  //const handleChange = useDebounce((e: React.ChangeEvent) => {
+  //  e.preventDefault();
+  //  setSearch(e.target?.addEventListener);
+  //  console.log();
+  //}, 500);
+
+  //if (search.length > 0) {
+  //  setTimeout(() => {
+  //    products.filter((product_name) => {
+  //      return products.product_name.match(search);
+  //    });
+  //  }, 100);
+  //
+
+  const newFunction = useDebounce((event) => {
+    setSearch(event.target.value);
+  }, 2000);
+
+  console.log(search);
 
   return (
     <>
@@ -170,44 +190,33 @@ export function Homescreen() {
         <SearchSection ref={wrapperRef}>
           Search for products
           <input
-            className="inputfield"
             type="text"
+            placeholder="Search here"
+            onChange={newFunction}
             value={search}
-            onClick={() => setDisplay(!display)}
-            onChange={(event) => setSearch(event.currentTarget.value)}
           />
           {display && (
             <div>
-              {products.product_name
-                //.filter(
-                //  ({ product_name }) =>
-                //    product_name.indexOf(search.toLowerCase()) > -1
-                //)
+              {products
+                ?.filter(({ product_name }) =>
+                  product_name.toLowerCase().includes(search)
+                )
+
                 //.slice(0, 5)
-                .map((products, index) => {
+                .map((products) => {
                   return (
-                    <Link
-                      href="/product/${products.product_name}"
-                      //pathname: `/product/${products.product_name}`,
-                      //state: {
-                      //  product_name: products.product_name,
-                      //  image: products.image,
-                      //  Wishtrendlink: products.Wishtrendlink,
-                      //  Stylevanalink: products.Stylevanalink,
-                      //  RoseRoselink: products.RoseRoselink,
-                      //  YesStylelink: products.YesStylelink,
-                      //  BeautynetKorealink: products.BeautynetKorealink,
-                      //},
-                    >
+                    <Link href={`products/${products}`}>
                       <OptionDiv
-                        onClick={() => setProductDex(products.product_name)}
-                        key={products.product_name}
-                        //tabIndex="0"
+                        onClick={() =>
+                          setProductDex(products && products.product_name)
+                        }
+                        key={products && products.product_name}
+                        tabIndex="0"
                       >
                         <div>
-                          <img src={products.image} alt="product" />
+                          <img src={products && products.image} alt="product" />
                         </div>
-                        <span>{products.product_name}</span>
+                        <span>{products && products.product_name}</span>
                       </OptionDiv>
                     </Link>
                   );
